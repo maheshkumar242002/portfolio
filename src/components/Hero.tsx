@@ -1,7 +1,60 @@
 import { useEffect, useRef, useState } from 'react'
+import { COMPANY, STATS } from '../data'
+
+// Animated Counter Hook
+function useCounter(end: number, duration: number = 2000, startOnView: boolean = true) {
+  const [count, setCount] = useState(0)
+  const [started, setStarted] = useState(!startOnView)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!startOnView) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.5 }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [startOnView])
+
+  useEffect(() => {
+    if (!started) return
+
+    let startTime: number
+    let animationFrame: number
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const progress = Math.min((timestamp - startTime) / duration, 1)
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4)
+      setCount(Math.floor(easeOutQuart * end))
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate)
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationFrame)
+  }, [end, duration, started])
+
+  return { count, ref }
+}
 
 // Typewriter effect hook
-function useTypewriter(words: string[], speed = 80, pause = 2000) {
+function useTypewriter(words: string[], speed = 80, pause = 2500) {
   const [text, setText] = useState('')
   const [wordIndex, setWordIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -27,277 +80,349 @@ function useTypewriter(words: string[], speed = 80, pause = 2000) {
   return text
 }
 
-// Simple particle background
-function Particles() {
+// Animated gradient mesh background
+function GradientMesh() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
+
     const ctx = canvas.getContext('2d')!
-    let animId: number
+    let animationId: number
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
+      canvas.width = canvas.offsetWidth * window.devicePixelRatio
+      canvas.height = canvas.offsetHeight * window.devicePixelRatio
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
     }
     resize()
     window.addEventListener('resize', resize)
 
-    const dots: { x: number; y: number; vx: number; vy: number; r: number; a: number }[] = Array.from({ length: 55 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 0.5,
-      a: Math.random(),
-    }))
+    // Floating orbs configuration
+    const orbs = [
+      { x: 0.2, y: 0.3, radius: 300, speedX: 0.0003, speedY: 0.0002, phase: 0 },
+      { x: 0.8, y: 0.6, radius: 250, speedX: -0.0002, speedY: 0.0003, phase: 2 },
+      { x: 0.5, y: 0.8, radius: 200, speedX: 0.0004, speedY: -0.0002, phase: 4 },
+    ]
 
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      dots.forEach(d => {
-        d.x += d.vx; d.y += d.vy
-        if (d.x < 0 || d.x > canvas.width) d.vx *= -1
-        if (d.y < 0 || d.y > canvas.height) d.vy *= -1
+    const draw = (time: number) => {
+      const width = canvas.offsetWidth
+      const height = canvas.offsetHeight
 
-        ctx.beginPath()
-        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(0,255,0,${d.a * 0.5})`
-        ctx.fill()
+      ctx.clearRect(0, 0, width, height)
+
+      orbs.forEach((orb, i) => {
+        // Calculate position with subtle movement
+        const x = width * (orb.x + Math.sin(time * orb.speedX + orb.phase) * 0.1)
+        const y = height * (orb.y + Math.cos(time * orb.speedY + orb.phase) * 0.1)
+
+        // Create gradient
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, orb.radius)
+        
+        // Green color with varying opacity
+        const alpha = 0.08 + Math.sin(time * 0.001 + i) * 0.03
+        gradient.addColorStop(0, `rgba(16, 185, 129, ${alpha})`)
+        gradient.addColorStop(0.5, `rgba(52, 211, 153, ${alpha * 0.5})`)
+        gradient.addColorStop(1, 'rgba(16, 185, 129, 0)')
+
+        ctx.fillStyle = gradient
+        ctx.fillRect(0, 0, width, height)
       })
 
-      // Draw connecting lines
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const dx = dots[i].x - dots[j].x
-          const dy = dots[i].y - dots[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 100) {
-            ctx.beginPath()
-            ctx.moveTo(dots[i].x, dots[i].y)
-            ctx.lineTo(dots[j].x, dots[j].y)
-            ctx.strokeStyle = `rgba(0,255,0,${(1 - dist / 100) * 0.12})`
-            ctx.lineWidth = 0.8
-            ctx.stroke()
-          }
-        }
-      }
-
-      animId = requestAnimationFrame(draw)
+      animationId = requestAnimationFrame(draw)
     }
-    draw()
+
+    draw(0)
 
     return () => {
-      cancelAnimationFrame(animId)
+      cancelAnimationFrame(animationId)
       window.removeEventListener('resize', resize)
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" />
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      aria-hidden="true"
+    />
+  )
 }
 
-const ROLES = [
-  'Full-Stack Developer',
-  'React Developer',
-  'Node.js Developer',
-  'TypeScript Developer',
-]
+// Floating geometric shapes
+function FloatingShapes() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      {/* Hexagon */}
+      <div className="absolute top-[15%] right-[10%] animate-float-slow opacity-20">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <path 
+            d="M30 5L52.5 17.5V42.5L30 55L7.5 42.5V17.5L30 5Z" 
+            stroke="var(--color-primary)" 
+            strokeWidth="2"
+          />
+        </svg>
+      </div>
+      
+      {/* Circle */}
+      <div className="absolute top-[60%] left-[5%] animate-float opacity-15" style={{ animationDelay: '1s' }}>
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="35" stroke="var(--color-primary)" strokeWidth="2" strokeDasharray="8 4" />
+        </svg>
+      </div>
+      
+      {/* Triangle */}
+      <div className="absolute top-[30%] left-[15%] animate-float-slow opacity-20" style={{ animationDelay: '2s' }}>
+        <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+          <path d="M25 5L45 40H5L25 5Z" stroke="var(--color-primary)" strokeWidth="2" />
+        </svg>
+      </div>
+      
+      {/* Square */}
+      <div className="absolute bottom-[20%] right-[15%] animate-spin-slow opacity-15">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect x="5" y="5" width="30" height="30" stroke="var(--color-primary)" strokeWidth="2" transform="rotate(45 20 20)" />
+        </svg>
+      </div>
 
-const STATS = [
-  { value: '2+',   label: 'Years Experience' },
-  { value: '10+',  label: 'Projects Completed' },
-  { value: '100%', label: 'Commitment' },
+      {/* Dots pattern */}
+      <div className="absolute top-[45%] right-[25%] opacity-20">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="var(--color-primary)">
+          {[0, 1, 2, 3, 4].map(row => (
+            [0, 1, 2, 3, 4].map(col => (
+              <circle key={`${row}-${col}`} cx={10 + col * 20} cy={10 + row * 20} r="2" />
+            ))
+          ))}
+        </svg>
+      </div>
+    </div>
+  )
+}
+
+// Stat card component
+function StatCard({ value, label, suffix }: { value: string; label: string; suffix?: string }) {
+  const numericValue = parseInt(value)
+  const { count, ref } = useCounter(numericValue, 2000)
+
+  return (
+    <div 
+      ref={ref}
+      className="text-center p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] hover:border-[var(--color-primary)] hover:shadow-[var(--shadow-glow)] transition-all duration-300 group"
+    >
+      <p className="text-3xl md:text-4xl font-black text-gradient group-hover:scale-110 transition-transform duration-300">
+        {count}{suffix}
+      </p>
+      <p className="text-sm text-[var(--color-text-muted)] mt-1 font-medium">{label}</p>
+    </div>
+  )
+}
+
+// Service keywords for typewriter
+const SERVICES = [
+  'Web Applications',
+  'Mobile Apps',
+  'Custom Software',
+  'UI/UX Design',
+  'E-Commerce Solutions',
+  'SaaS Products',
 ]
 
 export default function Hero() {
-  const role = useTypewriter(ROLES)
+  const service = useTypewriter(SERVICES)
 
-  const scrollToContact = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-  }
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-white"
-      aria-label="Hero – Introduction"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[var(--color-bg-primary)]"
+      aria-label="Hero section"
     >
-      <Particles />
+      {/* Background effects */}
+      <GradientMesh />
+      <FloatingShapes />
+      
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 grid-pattern" aria-hidden="true" />
 
-      {/* Decorative circle */}
-      <div
-        className="absolute -top-32 -right-32 w-96 h-96 rounded-full opacity-8 animate-spin-slow"
-        style={{ border: '2px solid #00FF00' }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full opacity-5"
-        style={{ backgroundColor: '#00FF00' }}
-        aria-hidden="true"
-      />
-
-      <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-16">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left – text */}
-          <div>
-            {/* Availability badge */}
-            <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-8 animate-fade-in"
-              style={{ backgroundColor: 'rgba(0,255,0,0.12)', color: '#007700' }}
+      {/* Content */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left - Text Content */}
+          <div className="text-center lg:text-left">
+            {/* Status badge */}
+            <div 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-fade-in bg-[var(--color-primary-muted)] text-[var(--color-primary-dark)] dark:text-[var(--color-primary-light)]"
               role="status"
-              aria-label="Currently available for work"
             >
-              <span
-                className="w-2 h-2 rounded-full animate-pulse"
-                style={{ backgroundColor: '#00FF00' }}
+              <span 
+                className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse-glow"
                 aria-hidden="true"
               />
-              Available for freelance work
+              Available for new projects
             </div>
 
-            <h1 className="text-5xl md:text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] animate-fade-in-up">
-              Hi, I'm{' '}
-              <span className="text-gradient block">Mahesh Kumar</span>
+            {/* Main heading */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] animate-fade-in-up">
+              We Build
+              <span className="block text-gradient-animated mt-2">
+                {COMPANY.name}
+              </span>
             </h1>
 
-            {/* Typewriter */}
-            <div
-              className="mt-4 text-xl md:text-2xl font-mono font-semibold text-gray-700 h-8 animate-fade-in delay-200"
+            {/* Typewriter subtitle */}
+            <div 
+              className="mt-6 h-10 flex items-center justify-center lg:justify-start animate-fade-in delay-200"
               aria-live="polite"
-              aria-label={`Role: ${role}`}
             >
-              <span aria-hidden="true">&gt; {role}</span>
-              <span className="animate-blink ml-0.5" aria-hidden="true">|</span>
+              <span className="text-xl md:text-2xl font-mono font-semibold text-[var(--color-text-secondary)]">
+                <span className="text-[var(--color-primary)]">&gt;</span> {service}
+                <span className="animate-blink ml-1 text-[var(--color-primary)]">|</span>
+              </span>
             </div>
 
-            <p className="mt-6 text-lg text-gray-600 leading-relaxed max-w-xl animate-fade-in-up delay-300">
-              I craft <strong className="text-black font-semibold">blazing-fast</strong>,{' '}
-              <strong className="text-black font-semibold">accessible</strong>, and{' '}
-              <strong className="text-black font-semibold">visually stunning</strong> web experiences
-              using React, TypeScript, and modern tooling — from design systems to deployment.
+            {/* Description */}
+            <p className="mt-6 text-lg text-[var(--color-text-secondary)] leading-relaxed max-w-xl mx-auto lg:mx-0 animate-fade-in-up delay-300">
+              {COMPANY.description}
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-4 animate-fade-in-up delay-400">
+            {/* CTA Buttons */}
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up delay-400">
               <button
-                id="hero-cta-contact"
-                className="btn-brand text-base"
-                onClick={scrollToContact}
-                aria-label="Contact Mahesh Kumar"
+                onClick={() => scrollToSection('pricing')}
+                className="btn-primary text-base px-8 py-4"
               >
-                <span aria-hidden="true">✉</span>
-                Contact Me
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                Order Now
               </button>
               <button
-                id="hero-cta-projects"
-                className="btn-outline text-base"
-                onClick={scrollToProjects}
-                aria-label="View portfolio projects"
+                onClick={() => scrollToSection('contact')}
+                className="btn-secondary text-base px-8 py-4"
               >
-                View Projects
-                <span aria-hidden="true">↓</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                Contact Us
               </button>
             </div>
 
-            {/* Tech badges */}
-            <div className="mt-10 flex flex-wrap gap-2 animate-fade-in delay-500" aria-label="Core technologies">
-              {['React', 'TypeScript', 'Next.js', 'Tailwind CSS', 'Node.js', 'GraphQL'].map(tech => (
-                <span
-                  key={tech}
-                  className="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200 hover:border-green-400 hover:bg-green-50 transition-colors cursor-default"
-                  style={{ '--tw-border-opacity': 1 } as React.CSSProperties}
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
           </div>
 
-          {/* Right – avatar card */}
-          <div className="flex justify-center lg:justify-end animate-fade-in delay-200">
-            <div className="relative">
-              {/* Glow ring */}
-              <div
-                className="absolute inset-0 rounded-2xl blur-2xl opacity-30"
-                style={{ backgroundColor: '#00FF00', transform: 'scale(0.95)' }}
+          {/* Right - Visual Element: 3D Rubik's Cube */}
+          <div className="flex justify-center lg:justify-end animate-fade-in delay-300">
+            <div className="relative w-80 md:w-96 h-80 md:h-[400px] flex items-center justify-center perspective-1000">
+              {/* Glow effect */}
+              <div 
+                className="absolute inset-0 bg-[var(--color-primary)] blur-[100px] opacity-15 animate-glow-pulse"
                 aria-hidden="true"
               />
-              <div
-                className="relative rounded-2xl overflow-hidden border-2"
-                style={{ borderColor: '#00FF00' }}
+              
+              {/* 3D Cube Container */}
+              <div 
+                className="cube-container"
+                style={{ transformStyle: 'preserve-3d' }}
+                aria-hidden="true"
               >
-                {/* Avatar placeholder – gradient art */}
-                <div
-                  className="w-72 h-80 md:w-80 md:h-96 flex flex-col items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0d1a0d 100%)',
-                  }}
-                  role="img"
-                  aria-label="Mahesh Kumar avatar illustration"
-                >
-                  <div className="text-8xl select-none" aria-hidden="true">👨‍💻</div>
-                  <p className="mt-4 font-mono text-sm" style={{ color: '#00FF00' }}>
-                    console.log(<span style={{ color: '#ffdd57' }}>"Hello World"</span>)
-                  </p>
-                  <p className="font-mono text-xs mt-1" style={{ color: '#888' }}>
-                    // Building the future
-                  </p>
+                <div className="cube">
+                  {/* Front face */}
+                  <div className="cube-face cube-front">
+                    <div className="cube-grid">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={`f-${i}`} className="cube-cell cube-cell-green" style={{ animationDelay: `${i * 0.1}s` }} />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Back face */}
+                  <div className="cube-face cube-back">
+                    <div className="cube-grid">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={`b-${i}`} className="cube-cell cube-cell-white" style={{ animationDelay: `${i * 0.1 + 0.5}s` }} />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Right face */}
+                  <div className="cube-face cube-right">
+                    <div className="cube-grid">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={`r-${i}`} className="cube-cell cube-cell-emerald" style={{ animationDelay: `${i * 0.1 + 0.2}s` }} />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Left face */}
+                  <div className="cube-face cube-left">
+                    <div className="cube-grid">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={`l-${i}`} className="cube-cell cube-cell-teal" style={{ animationDelay: `${i * 0.1 + 0.3}s` }} />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Top face */}
+                  <div className="cube-face cube-top">
+                    <div className="cube-grid">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={`t-${i}`} className="cube-cell cube-cell-mint" style={{ animationDelay: `${i * 0.1 + 0.4}s` }} />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Bottom face */}
+                  <div className="cube-face cube-bottom">
+                    <div className="cube-grid">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={`bo-${i}`} className="cube-cell cube-cell-sage" style={{ animationDelay: `${i * 0.1 + 0.6}s` }} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
+              </div>
 
-                {/* Floating badge */}
-                <div
-                  className="absolute bottom-4 left-4 right-4 rounded-xl p-3 flex items-center gap-3"
-                  style={{ backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
-                  aria-hidden="true"
-                >
+              {/* Floating particles */}
+              <div className="absolute inset-0 pointer-events-none">
+                {[...Array(6)].map((_, i) => (
                   <div
-                    className="w-2 h-2 rounded-full animate-pulse flex-shrink-0"
-                    style={{ backgroundColor: '#00FF00' }}
+                    key={i}
+                    className="absolute w-2 h-2 rounded-full bg-[var(--color-primary)] opacity-40 animate-float-particle"
+                    style={{
+                      left: `${20 + i * 12}%`,
+                      top: `${15 + (i % 3) * 25}%`,
+                      animationDelay: `${i * 0.5}s`,
+                      animationDuration: `${3 + i * 0.5}s`,
+                    }}
                   />
-                  <span className="text-white text-xs font-mono">Open to new opportunities</span>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Stats bar */}
-        <div
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in-up delay-600"
-          role="list"
-          aria-label="Career statistics"
-        >
-          {STATS.map(s => (
-            <div
-              key={s.label}
-              className="text-center p-5 rounded-2xl border border-gray-100 bg-gray-50 hover:border-green-300 hover:bg-green-50 transition-all duration-200 group"
-              role="listitem"
-            >
-              <p
-                className="text-3xl font-black text-gradient group-hover:scale-110 transition-transform duration-200"
-              >
-                {s.value}
-              </p>
-              <p className="text-xs text-gray-500 mt-1 font-medium">{s.label}</p>
-            </div>
+        {/* Stats Section */}
+        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 animate-fade-in-up delay-600">
+          {STATS.map((stat) => (
+            <StatCard key={stat.label} {...stat} />
           ))}
         </div>
 
         {/* Scroll indicator */}
-        <div
-          className="mt-16 flex justify-center animate-fade-in delay-800"
-          aria-hidden="true"
-        >
+        <div className="mt-16 flex justify-center animate-fade-in delay-800">
           <button
-            onClick={scrollToProjects}
-            className="flex flex-col items-center gap-2 text-gray-400 hover:text-black transition-colors group"
-            tabIndex={-1}
+            onClick={() => scrollToSection('services')}
+            className="flex flex-col items-center gap-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors group"
+            aria-label="Scroll to services"
           >
-            <span className="text-xs font-mono">scroll down</span>
-            <div className="w-5 h-8 border-2 border-current rounded-full flex justify-center pt-1.5">
-              <div className="w-1 h-2 rounded-full bg-current animate-bounce" />
+            <span className="text-xs font-mono">Explore our services</span>
+            <div className="w-6 h-10 border-2 border-current rounded-full flex justify-center pt-2 group-hover:border-[var(--color-primary)]">
+              <div className="w-1 h-2 rounded-full bg-current animate-bounce-subtle" />
             </div>
           </button>
         </div>
