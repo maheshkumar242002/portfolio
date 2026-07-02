@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #00FF00;
+  --color-brand-dark: #00cc00;
+  --color-brand-light: #ccffcc;
+  --color-brand-muted: rgba(0, 255, 0, 0.1);
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+  color: #0a0a0a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+::-webkit-scrollbar-thumb {
+  background: #00FF00;
+  border-radius: 3px;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid #00FF00;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Selection */
+::selection {
+  background: #00FF00;
+  color: #000000;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pulse-brand {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,0,0.4); }
+  50%       { box-shadow: 0 0 0 12px rgba(0,255,0,0); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-fade-in-up   { animation: fadeInUp 0.7s ease both; }
+.animate-fade-in      { animation: fadeIn 0.7s ease both; }
+.animate-slide-in-left{ animation: slideInLeft 0.7s ease both; }
+.animate-pulse-brand  { animation: pulse-brand 2s infinite; }
+.animate-blink        { animation: blink 1s step-end infinite; }
+.animate-spin-slow    { animation: spin-slow 8s linear infinite; }
+
+/* Delay utilities */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* Brand gradient text */
+.text-gradient {
+  background: linear-gradient(135deg, #00FF00 0%, #00cc00 50%, #009900 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0,255,0,0.15);
+}
+
+/* Brand button */
+.btn-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #00FF00;
+  color: #000000;
+  font-weight: 700;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+.btn-brand:hover {
+  background-color: #000000;
+  color: #00FF00;
+  border-color: #00FF00;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,255,0,0.35);
+}
+.btn-brand:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: #000000;
+  font-weight: 700;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  border: 2px solid #000000;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+.btn-outline:hover {
+  border-color: #00FF00;
+  color: #00FF00;
+  transform: translateY(-2px);
+}
+
+/* Section */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #00cc00;
+}
