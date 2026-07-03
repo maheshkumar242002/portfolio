@@ -127,17 +127,17 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       {/* Starting Price */}
       <div className="relative mb-4 pb-4 border-b border-[var(--color-border)]">
         <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wide">Starting from</span>
-        <p className="text-2xl font-black text-gradient">${service.startingPrice.toLocaleString()}</p>
+        <p className="text-2xl font-black text-gradient">₹{service.startingPrice.toLocaleString('en-IN')}</p>
       </div>
 
       {/* Highlights */}
       <ul className="relative space-y-2">
         {service.highlights.slice(0, 4).map((highlight) => (
           <li key={highlight} className="flex items-start gap-2 text-sm text-[var(--color-text-secondary)]">
-            <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--color-primary)] flex items-center justify-center mt-0.5">
+            <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--color-primary)] flex items-center justify-center mt-0.5 text-white">
               <CheckIcon />
             </span>
-            <span className="text-white">{highlight}</span>
+            <span className="text-[var(--color-text-secondary)]">{highlight}</span>
           </li>
         ))}
       </ul>

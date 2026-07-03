@@ -164,7 +164,7 @@ function TeamMemberCard({ member, index }: { member: TeamMember; index: number }
 
         {/* Skills */}
         <div className="mt-6 flex flex-wrap gap-2 justify-center">
-          {member.skills.slice(0, 4).map((skill) => (
+          {member.skills.map((skill) => (
             <span
               key={skill}
               className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border)]"

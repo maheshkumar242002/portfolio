@@ -222,10 +222,7 @@ function StatCard({ value, label, suffix }: { value: string; label: string; suff
 const SERVICES = [
   'Web Applications',
   'Mobile Apps',
-  'Custom Software',
-  'UI/UX Design',
-  'E-Commerce Solutions',
-  'SaaS Products',
+  'Desktop Apps',
 ]
 
 export default function Hero() {
@@ -253,18 +250,6 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left - Text Content */}
           <div className="text-center lg:text-left">
-            {/* Status badge */}
-            <div 
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 animate-fade-in bg-[var(--color-primary-muted)] text-[var(--color-primary-dark)] dark:text-[var(--color-primary-light)]"
-              role="status"
-            >
-              <span 
-                className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse-glow"
-                aria-hidden="true"
-              />
-              Available for new projects
-            </div>
-
             {/* Main heading */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] animate-fade-in-up">
               We Build

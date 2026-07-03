@@ -26,6 +26,7 @@ export interface PricingPlan {
   name: string
   description: string
   price: number | 'custom'
+  priceUSD?: number
   period?: string
   features: string[]
   popular?: boolean

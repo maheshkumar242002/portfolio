@@ -66,8 +66,6 @@ const SERVICE_OPTIONS = [
   { value: 'web', label: 'Web App Development' },
   { value: 'mobile', label: 'Mobile App Development' },
   { value: 'desktop', label: 'Desktop App Development' },
-  { value: 'custom', label: 'Custom Software' },
-  { value: 'design', label: 'UI/UX Design' },
   { value: 'other', label: 'Other' },
 ]
 
