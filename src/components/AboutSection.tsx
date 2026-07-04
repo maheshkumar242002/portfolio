@@ -26,8 +26,10 @@ function useInView(threshold = 0.2) {
 function SkillBar({ skill, inView, delay }: { skill: Skill; inView: boolean; delay: number }) {
   const categoryColor: Record<Skill['category'], string> = {
     frontend: '#00FF00',
-    tooling: '#00cc00',
+    backend: '#10B981',
+    mobile: '#F59E0B',
     design: '#009900',
+    devops: '#8B5CF6',
   }
   const color = categoryColor[skill.category]
 
@@ -61,8 +63,10 @@ function SkillBar({ skill, inView, delay }: { skill: Skill; inView: boolean; del
 
 const CATEGORY_LABELS: Record<Skill['category'], string> = {
   frontend: '🖥 Frontend',
-  tooling:  '🛠 Tooling',
-  design:   '🎨 Design',
+  backend: '⚙️ Backend',
+  mobile: '📱 Mobile',
+  design: '🎨 Design',
+  devops: '🚀 DevOps',
 }
 
 export default function AboutSection() {
@@ -70,7 +74,7 @@ export default function AboutSection() {
 
   const grouped = SKILLS.reduce<Record<Skill['category'], Skill[]>>(
     (acc, s) => { acc[s.category].push(s); return acc },
-    { frontend: [], tooling: [], design: [] }
+    { frontend: [], backend: [], mobile: [], design: [], devops: [] }
   )
 
   return (

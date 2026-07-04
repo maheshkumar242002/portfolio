@@ -145,7 +145,15 @@ function TeamMemberCard({ member, index }: { member: TeamMember; index: number }
         <div className="relative w-32 h-32 mx-auto mb-6">
           <div className="absolute inset-0 rounded-full bg-[var(--color-primary)] opacity-20 blur-xl group-hover:opacity-30 transition-opacity" />
           <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-[var(--color-bg-primary)] shadow-lg group-hover:scale-105 transition-transform duration-300">
-            {Avatar && <Avatar />}
+            {Avatar ? (
+              <Avatar />
+            ) : (
+              <img
+                src={member.avatar}
+                alt={member.name}
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
         </div>
 

@@ -94,24 +94,32 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     >
       {/* Project Header/Image Area */}
       <div className="relative h-48 bg-gradient-to-br from-[var(--color-bg-secondary)] to-[var(--color-bg-tertiary)] overflow-hidden">
-        {/* Decorative pattern */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-4 right-4 w-32 h-32 rounded-full border border-[var(--color-primary)] opacity-20" />
-          <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full border border-[var(--color-primary)] opacity-10" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <CategoryIcon className="w-20 h-20 text-[var(--color-primary)] opacity-20" />
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          /* Decorative pattern */
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute top-4 right-4 w-32 h-32 rounded-full border border-[var(--color-primary)] opacity-20" />
+            <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full border border-[var(--color-primary)] opacity-10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <CategoryIcon className="w-20 h-20 text-[var(--color-primary)] opacity-20" />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Featured badge */}
         {project.featured && (
-          <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold">
+          <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold z-10">
             Featured
           </div>
         )}
 
         {/* Category badge */}
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-xs font-semibold capitalize">
+        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-secondary)] text-xs font-semibold capitalize z-10">
           {project.category}
         </div>
 

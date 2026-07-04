@@ -94,7 +94,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('hero')
-  const { theme, toggleTheme, isDark } = useTheme()
+  const { toggleTheme, isDark } = useTheme()
 
   // Handle scroll effects
   useEffect(() => {
