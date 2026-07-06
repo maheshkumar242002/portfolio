@@ -104,7 +104,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: "founder",
     name: "Mahesh kumar S",
     role: "Software Engineer",
-    bio: "Full-stack architect with 2+ years of experience building scalable applications. Passionate about clean code and delivering exceptional user experiences.",
+    bio: "Versatile developer specializing in end-to-end solutions with expertise spanning web, mobile, and cloud technologies. Committed to crafting performant, maintainable code that exceeds client expectations.",
     skills: [
       "React",
       "TypeScript",

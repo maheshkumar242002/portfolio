@@ -73,16 +73,18 @@ function Logo() {
           <path d="M28 9v14l-12 7V16l12-7z" fill="var(--color-primary)" fillOpacity="0.5"/>
         </svg>
       </div>
-      {/* Logo Text - Hidden on very small screens, show abbreviated */}
+      {/* Logo Text */}
       <div className="flex flex-col leading-tight">
-        <span className="hidden xs:inline text-sm sm:text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
-          <span className="hidden sm:inline">Green Tech Cube</span>
-          <span className="sm:hidden">GTC</span>
+        {/* Full name on medium+ screens */}
+        <span className="hidden md:block text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
+          Green Tech Cube
         </span>
-        <span className="xs:inline text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors sm:hidden">
+        {/* Short name on small screens */}
+        <span className="md:hidden text-base sm:text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
           GTC
         </span>
-        <span className="hidden sm:block text-[10px] font-semibold tracking-[0.2em] uppercase text-[var(--color-primary)] -mt-0.5">
+        {/* Solutions subtitle - always visible */}
+        <span className="text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-[var(--color-primary)] -mt-0.5">
           Solutions
         </span>
       </div>

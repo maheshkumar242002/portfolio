@@ -4,11 +4,13 @@ import Hero from './components/Hero'
 import Footer from './components/Footer'
 
 // Lazy-loaded sections for code-splitting
+const BentoGoals = lazy(() => import('./components/BentoGoals'))
 const ServicesSection = lazy(() => import('./components/ServicesSection'))
 const TechnologiesSection = lazy(() => import('./components/TechnologiesSection'))
 const ProjectsGrid = lazy(() => import('./components/ProjectsGrid'))
 const PricingSection = lazy(() => import('./components/PricingSection'))
 const TeamSection = lazy(() => import('./components/TeamSection'))
+const TestimonialsCarousel = lazy(() => import('./components/TestimonialsCarousel'))
 const ContactForm = lazy(() => import('./components/ContactForm'))
 
 // Loading spinner component
@@ -81,6 +83,10 @@ export default function App() {
         <Hero />
 
         <Suspense fallback={<SectionLoader />}>
+          <BentoGoals />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
           <ServicesSection />
         </Suspense>
 
@@ -98,6 +104,10 @@ export default function App() {
 
         <Suspense fallback={<SectionLoader />}>
           <TeamSection />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <TestimonialsCarousel />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
