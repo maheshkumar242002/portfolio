@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { NAV_ITEMS, COMPANY } from '../data'
+import { NAV_ITEMS } from '../data'
 import { useTheme } from '../context/ThemeContext'
 
 // Icons
