@@ -388,8 +388,8 @@ export default function Hero() {
           </div>
 
           {/* Right - Visual Element: 3D Rubik's Cube */}
-          <div className="hidden sm:flex justify-center lg:justify-end animate-fade-in delay-300">
-            <div className="relative w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-[400px] flex items-center justify-center perspective-1000">
+          <div className="flex justify-center lg:justify-end animate-fade-in delay-300">
+            <div className="relative w-48 sm:w-64 md:w-80 lg:w-96 h-48 sm:h-64 md:h-80 lg:h-[400px] flex items-center justify-center perspective-1000">
               {/* Glow effect */}
               <div 
                 className="absolute inset-0 bg-[var(--color-primary)] blur-[100px] opacity-15 animate-glow-pulse"
