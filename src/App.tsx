@@ -64,7 +64,7 @@ function ScrollTopButton() {
 export default function App() {
   return (
     <div 
-      className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] font-sans transition-colors duration-300" 
+      className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] font-sans transition-colors duration-300 overflow-x-hidden" 
       id="app-root"
     >
       {/* Skip to main content – keyboard accessibility */}

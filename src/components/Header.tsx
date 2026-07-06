@@ -51,20 +51,20 @@ function Logo() {
   return (
     <a 
       href="#hero" 
-      className="flex items-center gap-2 group"
+      className="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0"
       aria-label="Green Tech Cube Solutions - Home"
     >
       {/* Logo Icon - 3D Cube */}
-      <div className="relative w-10 h-10 flex items-center justify-center">
+      <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0">
         <div 
-          className="absolute inset-0 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] opacity-20 group-hover:opacity-30 transition-opacity"
+          className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] opacity-20 group-hover:opacity-30 transition-opacity"
         />
         <svg 
-          width="28" 
-          height="28" 
+          width="22" 
+          height="22" 
           viewBox="0 0 32 32" 
           fill="none" 
-          className="relative z-10"
+          className="relative z-10 sm:w-7 sm:h-7"
         >
           {/* 3D Cube Shape */}
           <path d="M16 2L4 9v14l12 7 12-7V9L16 2z" fill="var(--color-primary)" fillOpacity="0.2"/>
@@ -73,14 +73,16 @@ function Logo() {
           <path d="M28 9v14l-12 7V16l12-7z" fill="var(--color-primary)" fillOpacity="0.5"/>
         </svg>
       </div>
-      {/* Logo Text */}
+      {/* Logo Text - Hidden on very small screens, show abbreviated */}
       <div className="flex flex-col leading-tight">
-        <div className="flex items-baseline gap-1">
-          <span className="text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
-            Green Tech Cube
-          </span>
-        </div>
-        <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[var(--color-primary)] -mt-0.5">
+        <span className="hidden xs:inline text-sm sm:text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
+          <span className="hidden sm:inline">Green Tech Cube</span>
+          <span className="sm:hidden">GTC</span>
+        </span>
+        <span className="xs:inline text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors sm:hidden">
+          GTC
+        </span>
+        <span className="hidden sm:block text-[10px] font-semibold tracking-[0.2em] uppercase text-[var(--color-primary)] -mt-0.5">
           Solutions
         </span>
       </div>
@@ -152,12 +154,12 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'py-3 bg-[var(--color-bg-primary)]/90 backdrop-blur-lg shadow-[var(--shadow-md)] border-b border-[var(--color-border)]'
-          : 'py-5 bg-transparent'
+          ? 'py-2 sm:py-3 bg-[var(--color-bg-primary)]/90 backdrop-blur-lg shadow-[var(--shadow-md)] border-b border-[var(--color-border)]'
+          : 'py-3 sm:py-5 bg-transparent'
       }`}
       role="banner"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between" aria-label="Main navigation">
           {/* Logo */}
           <Logo />
@@ -191,14 +193,14 @@ export default function Header() {
           </div>
 
           {/* Right side buttons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-4 flex-shrink-0">
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="relative w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
+              className="relative w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-md sm:rounded-lg flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
               aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
             >
-              <div className="relative w-5 h-5">
+              <div className="relative w-4 h-4 sm:w-5 sm:h-5">
                 <span 
                   className={`absolute inset-0 transition-all duration-300 ${
                     isDark ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
@@ -216,22 +218,24 @@ export default function Header() {
               </div>
             </button>
 
-            {/* CTA Button - Desktop */}
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault()
-                handleNavClick('#contact')
-              }}
-              className="hidden sm:inline-flex btn-primary text-xs py-2 px-4"
-            >
-              Get a Quote
-            </a>
+            {/* CTA Button - Only show on large screens (1024px+) */}
+            <div className="hidden lg:block">
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleNavClick('#contact')
+                }}
+                className="btn-primary text-xs py-1.5 px-3"
+              >
+                Get a Quote
+              </a>
+            </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Show below lg (1024px) */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden w-10 h-10 rounded-xl flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
+              className="lg:hidden w-7 h-7 sm:w-8 sm:h-8 rounded-md sm:rounded-lg flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
             >
