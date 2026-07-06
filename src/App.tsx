@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 
 // Lazy-loaded sections for code-splitting
 const ServicesSection = lazy(() => import('./components/ServicesSection'))
+const TechnologiesSection = lazy(() => import('./components/TechnologiesSection'))
 const ProjectsGrid = lazy(() => import('./components/ProjectsGrid'))
 const PricingSection = lazy(() => import('./components/PricingSection'))
 const TeamSection = lazy(() => import('./components/TeamSection'))
@@ -81,6 +82,10 @@ export default function App() {
 
         <Suspense fallback={<SectionLoader />}>
           <ServicesSection />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <TechnologiesSection />
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>

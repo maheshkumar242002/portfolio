@@ -177,7 +177,6 @@ export default function ContactForm() {
       setForm({ name: '', email: '', subject: '', message: '', service: '' })
       setErrors({})
     } catch (err) {
-      console.error('EmailJS error:', err)
       setStatus('error')
     }
   }
@@ -209,7 +208,7 @@ export default function ContactForm() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Contact info sidebar */}
           <aside className={`lg:col-span-2 space-y-6 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
             {/* Info cards */}

@@ -606,13 +606,41 @@ body {
 }
 
 /* ===== Responsive Typography ===== */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .section-description {
+    font-size: 0.9rem;
+  }
+  
+  .section-label {
+    font-size: 0.7rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
   .section-title {
     font-size: 2rem;
   }
   
   .section-description {
     font-size: 1rem;
+  }
+}
+
+/* Large screens - ensure max-width for content readability */
+@media (min-width: 1536px) {
+  .max-w-7xl {
+    max-width: 1400px;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1920px) {
+  html {
+    font-size: 18px;
   }
 }
 

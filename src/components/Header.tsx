@@ -52,9 +52,9 @@ function Logo() {
     <a 
       href="#hero" 
       className="flex items-center gap-2 group"
-      aria-label={`${COMPANY.name} - Home`}
+      aria-label="Green Tech Cube Solutions - Home"
     >
-      {/* Logo Icon */}
+      {/* Logo Icon - 3D Cube */}
       <div className="relative w-10 h-10 flex items-center justify-center">
         <div 
           className="absolute inset-0 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] opacity-20 group-hover:opacity-30 transition-opacity"
@@ -66,24 +66,22 @@ function Logo() {
           fill="none" 
           className="relative z-10"
         >
-          <path 
-            d="M6 8h20v4H10v4h12v4H10v4h16v4H6V8z" 
-            fill="var(--color-primary)"
-          />
-          <path 
-            d="M26 8v20h-4V12H10v16H6V8h20z" 
-            fill="var(--color-primary-dark)"
-            opacity="0.5"
-          />
+          {/* 3D Cube Shape */}
+          <path d="M16 2L4 9v14l12 7 12-7V9L16 2z" fill="var(--color-primary)" fillOpacity="0.2"/>
+          <path d="M16 2L4 9l12 7 12-7-12-7z" fill="var(--color-primary)"/>
+          <path d="M4 9v14l12 7V16L4 9z" fill="var(--color-primary-dark)" fillOpacity="0.7"/>
+          <path d="M28 9v14l-12 7V16l12-7z" fill="var(--color-primary)" fillOpacity="0.5"/>
         </svg>
       </div>
       {/* Logo Text */}
-      <div className="flex flex-col">
-        <span className="text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
-          {COMPANY.name}
-        </span>
-        <span className="text-[10px] font-medium tracking-wider uppercase text-[var(--color-text-muted)] -mt-0.5">
-          {COMPANY.tagline}
+      <div className="flex flex-col leading-tight">
+        <div className="flex items-baseline gap-1">
+          <span className="text-lg font-black tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
+            Green Tech Cube
+          </span>
+        </div>
+        <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[var(--color-primary)] -mt-0.5">
+          Solutions
         </span>
       </div>
     </a>
@@ -193,11 +191,11 @@ export default function Header() {
           </div>
 
           {/* Right side buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="relative w-10 h-10 rounded-xl flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
+              className="relative w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
               aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
             >
               <div className="relative w-5 h-5">
@@ -225,7 +223,7 @@ export default function Header() {
                 e.preventDefault()
                 handleNavClick('#contact')
               }}
-              className="hidden sm:inline-flex btn-primary text-sm py-2.5 px-5"
+              className="hidden sm:inline-flex btn-primary text-xs py-2 px-4"
             >
               Get a Quote
             </a>

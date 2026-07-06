@@ -208,12 +208,12 @@ function StatCard({ value, label, suffix }: { value: string; label: string; suff
   return (
     <div 
       ref={ref}
-      className="text-center p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] hover:border-[var(--color-primary)] hover:shadow-[var(--shadow-glow)] transition-all duration-300 group"
+      className="text-center p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] hover:border-[var(--color-primary)] hover:shadow-[var(--shadow-glow)] transition-all duration-300 group"
     >
-      <p className="text-3xl md:text-4xl font-black text-gradient group-hover:scale-110 transition-transform duration-300">
+      <p className="text-2xl sm:text-3xl md:text-4xl font-black text-gradient group-hover:scale-110 transition-transform duration-300">
         {count}{suffix}
       </p>
-      <p className="text-sm text-[var(--color-text-muted)] mt-1 font-medium">{label}</p>
+      <p className="text-xs sm:text-sm text-[var(--color-text-muted)] mt-1 font-medium">{label}</p>
     </div>
   )
 }
@@ -235,7 +235,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[var(--color-bg-primary)]"
+      className="relative min-h-[calc(100vh-80px)] lg:min-h-0 flex flex-col justify-center overflow-hidden bg-[var(--color-bg-primary)]"
       aria-label="Hero section"
     >
       {/* Background effects */}
@@ -246,7 +246,7 @@ export default function Hero() {
       <div className="absolute inset-0 grid-pattern" aria-hidden="true" />
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 lg:pt-28 pb-12 lg:pb-16">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left - Text Content */}
           <div className="text-center lg:text-left">
@@ -254,18 +254,17 @@ export default function Hero() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] animate-fade-in-up">
               We Build
               <span className="block text-gradient-animated mt-2">
-                {COMPANY.name}
+                {service || 'Digital Solutions'}
               </span>
             </h1>
 
-            {/* Typewriter subtitle */}
+            {/* Company tagline */}
             <div 
               className="mt-6 h-10 flex items-center justify-center lg:justify-start animate-fade-in delay-200"
               aria-live="polite"
             >
-              <span className="text-xl md:text-2xl font-mono font-semibold text-[var(--color-text-secondary)]">
-                <span className="text-[var(--color-primary)]">&gt;</span> {service}
-                <span className="animate-blink ml-1 text-[var(--color-primary)]">|</span>
+              <span className="text-xl md:text-2xl font-semibold text-[var(--color-text-secondary)]">
+                <span className="text-[var(--color-primary)]">GTC</span> — {COMPANY.tagline}
               </span>
             </div>
 
@@ -392,14 +391,14 @@ export default function Hero() {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 animate-fade-in-up delay-600">
+        <div className="mt-12 lg:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 animate-fade-in-up delay-600">
           {STATS.map((stat) => (
             <StatCard key={stat.label} {...stat} />
           ))}
         </div>
 
         {/* Scroll indicator */}
-        <div className="mt-16 flex justify-center animate-fade-in delay-800">
+        <div className="mt-10 lg:mt-12 flex justify-center animate-fade-in delay-800">
           <button
             onClick={() => scrollToSection('services')}
             className="flex flex-col items-center gap-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors group"

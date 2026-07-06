@@ -13,11 +13,11 @@ import type {
 
 // Company Information
 export const COMPANY: CompanyInfo = {
-  name: "EliteProdie",
-  tagline: "Crafting Digital Excellence",
+  name: "Green Tech Cube",
+  tagline: "Building Tomorrow's Digital Solutions",
   description:
     "We are a premium software development company delivering high-quality web, mobile, and custom software solutions at competitive prices. Our team of experts transforms your ideas into powerful digital products.",
-  email: "eliteprodie@gmail.com",
+  email: "greentechcube@gmail.com",
   founded: 2022,
 };
 
@@ -31,25 +31,25 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com/eliteprodie", icon: "github" },
+  { label: "GitHub", href: "https://github.com/greentechcube", icon: "github" },
   {
     label: "LinkedIn",
-    href: "https://linkedin.com/company/eliteprodie",
+    href: "https://linkedin.com/company/greentechcube",
     icon: "linkedin",
   },
   {
     label: "Twitter",
-    href: "https://twitter.com/eliteprodie",
+    href: "https://twitter.com/greentechcube",
     icon: "twitter",
   },
   {
     label: "Instagram",
-    href: "https://instagram.com/eliteprodie",
+    href: "https://instagram.com/greentechcube",
     icon: "instagram",
   },
   {
     label: "Facebook",
-    href: "https://facebook.com/eliteprodie",
+    href: "https://facebook.com/greentechcube",
     icon: "facebook",
   },
 ];
@@ -113,8 +113,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       "Python",
       "PHP",
       "MySQL",
-      "MongoDb"
-
+      "MongoDb",
     ],
     avatar: "/team/mahesh.png",
     socials: {
@@ -265,7 +264,7 @@ export const PROJECTS: Project[] = [
     liveUrl: "https://the-alchemist-beta.vercel.app",
     githubUrl: "https://github.com/eliteprodie/the-alchemist",
     featured: true,
-    category: "custom",
+    category: "web",
     image: "/projects/the-alchemist.png",
   },
   {
@@ -277,7 +276,7 @@ export const PROJECTS: Project[] = [
     liveUrl: "https://the-vault-peach-zeta.vercel.app",
     githubUrl: "https://github.com/eliteprodie/the-vault",
     featured: false,
-    category: "custom",
+    category: "web",
     image: "/projects/the-vault.png",
   },
   {
@@ -301,7 +300,7 @@ export const PROJECTS: Project[] = [
     liveUrl: "https://the-prism-ecru.vercel.app",
     githubUrl: "https://github.com/eliteprodie/the-prism",
     featured: false,
-    category: "custom",
+    category: "web",
     image: "/projects/the-prism.png",
   },
   {
@@ -337,7 +336,7 @@ export const PROJECTS: Project[] = [
     liveUrl: "https://the-catalyst-mu.vercel.app",
     githubUrl: "https://github.com/eliteprodie/the-catalyst",
     featured: false,
-    category: "custom",
+    category: "web",
     image: "/projects/the-catalyst.png",
   },
 ];
@@ -349,7 +348,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: "CEO",
     company: "TechStart Inc.",
     content:
-      "EliteProdie transformed our vision into reality. Their attention to detail and commitment to quality exceeded our expectations. The web app they built increased our conversion rate by 40%.",
+      "Green Tech Cube transformed our vision into reality. Their attention to detail and commitment to quality exceeded our expectations. The web app they built increased our conversion rate by 40%.",
     rating: 5,
   },
   {
@@ -358,7 +357,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: "Product Manager",
     company: "HealthCore Solutions",
     content:
-      "Working with EliteProdie was a game-changer. They delivered our mobile app on time and within budget. Their team's expertise in React Native is truly impressive.",
+      "Working with Green Tech Cube was a game-changer. They delivered our mobile app on time and within budget. Their team's expertise in React Native is truly impressive.",
     rating: 5,
   },
   {
@@ -367,7 +366,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: "Founder",
     company: "RetailFlow",
     content:
-      "The e-commerce platform EliteProdie built for us handles thousands of transactions daily without a hitch. Professional team, excellent communication, outstanding results.",
+      "The e-commerce platform Green Tech Cube built for us handles thousands of transactions daily without a hitch. Professional team, excellent communication, outstanding results.",
     rating: 5,
   },
 ];
