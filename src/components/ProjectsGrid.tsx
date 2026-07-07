@@ -170,7 +170,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 export default function ProjectsGrid() {
   const [isVisible, setIsVisible] = useState(false)
   const [filter, setFilter] = useState('all')
+  const [showAll, setShowAll] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
+  const INITIAL_DISPLAY_COUNT = 3
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -189,9 +191,20 @@ export default function ProjectsGrid() {
     return () => observer.disconnect()
   }, [])
 
-  const filteredProjects = filter === 'all' 
+  // Reset showAll when filter changes
+  useEffect(() => {
+    setShowAll(false)
+  }, [filter])
+
+  const allFilteredProjects = filter === 'all' 
     ? PROJECTS 
     : PROJECTS.filter(p => p.category === filter)
+  
+  const filteredProjects = showAll 
+    ? allFilteredProjects 
+    : allFilteredProjects.slice(0, INITIAL_DISPLAY_COUNT)
+  
+  const hasMoreProjects = allFilteredProjects.length > INITIAL_DISPLAY_COUNT
 
   return (
     <section
@@ -236,8 +249,54 @@ export default function ProjectsGrid() {
           ))}
         </div>
 
+        {/* Show More / Show Less Button */}
+        {hasMoreProjects && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="group flex items-center gap-3 px-6 py-3 rounded-xl text-sm font-semibold border-2 border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text-secondary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:shadow-[var(--shadow-glow)] transition-all duration-300"
+            >
+              {showAll ? (
+                <>
+                  <svg 
+                    width="20" 
+                    height="20" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="transition-transform duration-300 group-hover:-translate-y-1"
+                  >
+                    <polyline points="18 15 12 9 6 15" />
+                  </svg>
+                  Show Less
+                </>
+              ) : (
+                <>
+                  <svg 
+                    width="20" 
+                    height="20" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="transition-transform duration-300 group-hover:translate-y-1"
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                  Show More ({allFilteredProjects.length - INITIAL_DISPLAY_COUNT} more)
+                </>
+              )}
+            </button>
+          </div>
+        )}
+
         {/* Empty state */}
-        {filteredProjects.length === 0 && (
+        {allFilteredProjects.length === 0 && (
           <div className="text-center py-12">
             <p className="text-[var(--color-text-muted)]">No projects found in this category.</p>
           </div>

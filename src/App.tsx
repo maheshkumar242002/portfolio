@@ -4,7 +4,6 @@ import Hero from './components/Hero'
 import Footer from './components/Footer'
 
 // Lazy-loaded sections for code-splitting
-const BentoGoals = lazy(() => import('./components/BentoGoals'))
 const ServicesSection = lazy(() => import('./components/ServicesSection'))
 const TechnologiesSection = lazy(() => import('./components/TechnologiesSection'))
 const ProjectsGrid = lazy(() => import('./components/ProjectsGrid'))
@@ -81,10 +80,6 @@ export default function App() {
 
       <main id="main-content">
         <Hero />
-
-        <Suspense fallback={<SectionLoader />}>
-          <BentoGoals />
-        </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
           <ServicesSection />
